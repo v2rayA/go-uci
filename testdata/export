@@ -1,4 +1,0 @@
-package 'bar'
-
-config aconfig 'aconfig'
-  option opt 'val'

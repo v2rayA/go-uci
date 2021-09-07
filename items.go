@@ -59,7 +59,7 @@ const (
 	itemEOF // end of file; lexing ends here
 
 	itemPackage // package keyword
-	itemConfig  // config keyword
+	itemConfig  // Config keyword
 	itemOption  // option keyword
 	itemList    // list keyword
 	itemIdent   // identifier string
@@ -97,7 +97,7 @@ type keyword string
 // these are the recognized keywords.
 const (
 	kwPackage = keyword("package")
-	kwConfig  = keyword("config")
+	kwConfig  = keyword("Config")
 	kwOption  = keyword("option")
 	kwList    = keyword("list")
 )
@@ -128,7 +128,7 @@ const (
 	tokEOF
 
 	tokPackage // item-seq: (package, string)
-	tokSection // item-seq: (config, ident, maybe string)
+	tokSection // item-seq: (Config, ident, maybe string)
 	tokOption  // item-seq: (option, ident, string)
 	tokList    // item-seq: (list, ident, string)
 )
@@ -142,7 +142,7 @@ func (t scanToken) String() string {
 	case tokPackage:
 		return "package"
 	case tokSection:
-		return "config"
+		return "Config"
 	case tokOption:
 		return "option"
 	case tokList:

@@ -106,7 +106,7 @@ func (s *scanner) errorf(format string, args ...interface{}) scanFn {
 	return nil
 }
 
-// scanStart looks for a "package" or "config" item.
+// scanStart looks for a "package" or "Config" item.
 func scanStart(s *scanner) scanFn {
 	switch it := s.next(); it.typ { //nolint:exhaustive
 	case itemPackage:
@@ -118,7 +118,7 @@ func scanStart(s *scanner) scanFn {
 	case itemEOF:
 		return nil
 	default:
-		return s.errorf("expected package or config token, got %s", it)
+		return s.errorf("expected package or Config token, got %s", it)
 	}
 }
 
@@ -150,7 +150,7 @@ func scanSection(s *scanner) scanFn {
 	case itemError:
 		return s.errorf(it.val)
 	default:
-		return s.errorf("expected identifier while parsing config section, got %s", it)
+		return s.errorf("expected identifier while parsing Config section, got %s", it)
 	}
 }
 
@@ -225,8 +225,8 @@ func (s *scanner) each(fn func(token) bool) bool {
 	return true
 }
 
-// parse tries to parse a named input string into a config object.
-func parse(name, input string) (cfg *config, err error) {
+// Parse tries to parse a named input string into a Config object.
+func Parse(name, input string) (cfg *Config, err error) {
 	cfg = newConfig(name)
 	var sec *section
 

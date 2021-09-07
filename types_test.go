@@ -50,7 +50,7 @@ func TestUnmangleSectionName(t *testing.T) {
 }
 
 func TestConfigGet(t *testing.T) { //nolint:funlen
-	config, err := parse("unnamed", tcUnnamedInput)
+	config, err := Parse("unnamed", tcUnnamedInput)
 	assert.NoError(t, err)
 
 	cases := []*section{

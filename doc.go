@@ -2,7 +2,7 @@
 Package uci implements a binding to OpenWRT's UCI (Unified Configuration
 Interface) files in pure Go.
 
-The typical use case is reading and modifying UCI config options:
+The typical use case is reading and modifying UCI Config options:
 	import "github.com/digineo/go-uci"
 
 	uci.Get("network", "lan", "ifname") //=> []string{"eth0.1"}, true
@@ -30,7 +30,7 @@ The UCI grammar (for the purpose of this library) is defined as follows:
 			`package` value CRLF configDecl*
 
 	configDecl
-			`config` ident value? CRLF optionDecl*
+			`Config` ident value? CRLF optionDecl*
 
 	optionDecl
 			`option` ident value

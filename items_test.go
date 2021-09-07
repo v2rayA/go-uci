@@ -33,7 +33,7 @@ func TestScanTokenString(t *testing.T) {
 		"error",
 		"eof",
 		"package",
-		"config",
+		"Config",
 		"option",
 		"list",
 		"%scanToken(6)",

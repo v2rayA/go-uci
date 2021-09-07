@@ -2,7 +2,7 @@ package uci
 
 import "fmt"
 
-// ErrConfigAlreadyLoaded is returned by LoadConfig, if the given config
+// ErrConfigAlreadyLoaded is returned by LoadConfig, if the given Config
 // name is already present.
 type ErrConfigAlreadyLoaded struct {
 	Name string
@@ -59,7 +59,7 @@ func IsSectionTypeMismatch(err error) bool {
 type ParseError string
 
 func (err ParseError) Error() string {
-	return fmt.Sprintf("parse error: %s", string(err))
+	return fmt.Sprintf("Parse error: %s", string(err))
 }
 
 // IsParseError reports, whether err is of type ParseError.

@@ -30,7 +30,7 @@ func TestParseError(t *testing.T) {
 	assert := assert.New(t)
 
 	err := ParseError("expected foo")
-	assert.Equal(err.Error(), "parse error: expected foo")
+	assert.Equal(err.Error(), "Parse error: expected foo")
 
 	assert.False(IsParseError(nil))
 	assert.True(IsParseError(&err))

@@ -227,7 +227,7 @@ func lexKeyword(l *lexer) stateFn {
 		if len(unexpected) > 10 {
 			unexpected = unexpected[:10] + "…"
 		}
-		l.errorf("expected keyword (package, config, option, list) or eof, got %q", unexpected)
+		l.errorf("expected keyword (package, Config, option, list) or eof, got %q", unexpected)
 	}
 	return nil
 }

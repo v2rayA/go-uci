@@ -9,30 +9,30 @@ import (
 	"strings"
 )
 
-// NOTE: config, section and option types basically are AST nodes for the
+// NOTE: Config, section and option types basically are AST nodes for the
 // parser. The JSON struct tags are mainly for development and testing
 // purposes: We'er generating JSON dumps of the tree when running tests
 // with DUMP="json". After a manual comparison with the corresponding UCI
 // file in testdata/, we can use the dumps to read them back as test case
 // expectations.
 
-// config represents a file in UCI. It consists of sections.
-type config struct {
+// Config represents a file in UCI. It consists of sections.
+type Config struct {
 	Name     string     `json:"name"`
 	Sections []*section `json:"sections,omitempty"`
 
 	tainted bool // changed by tree methods when things were modified
 }
 
-// newConfig returns a new config object.
-func newConfig(name string) *config {
-	return &config{
+// newConfig returns a new Config object.
+func newConfig(name string) *Config {
+	return &Config{
 		Name:     name,
 		Sections: make([]*section, 0, 1),
 	}
 }
 
-func (c *config) WriteTo(w io.Writer) (n int64, err error) {
+func (c *Config) WriteTo(w io.Writer) (n int64, err error) {
 	var buf bytes.Buffer
 
 	for _, sec := range c.Sections {
@@ -60,7 +60,7 @@ func (c *config) WriteTo(w io.Writer) (n int64, err error) {
 // Get fetches a section by name.
 //
 // Support for unnamed section notation (@foo[idx]) is present.
-func (c *config) Get(name string) *section {
+func (c *Config) Get(name string) *section {
 	if strings.HasPrefix(name, "@") {
 		sec, _ := c.getUnnamed(name) // TODO: log error?
 		return sec
@@ -68,7 +68,7 @@ func (c *config) Get(name string) *section {
 	return c.getNamed(name)
 }
 
-func (c *config) getNamed(name string) *section {
+func (c *Config) getNamed(name string) *section {
 	for _, sec := range c.Sections {
 		if sec.Name == name {
 			return sec
@@ -129,7 +129,7 @@ func unmangleSectionName(name string) (typ string, index int, err error) { //nol
 
 var ErrUnnamedIndexOutOfBounds = errors.New("invalid name: index out of bounds")
 
-func (c *config) getUnnamed(name string) (*section, error) {
+func (c *Config) getUnnamed(name string) (*section, error) {
 	typ, idx, err := unmangleSectionName(name)
 	if err != nil {
 		return nil, err
@@ -154,12 +154,12 @@ func (c *config) getUnnamed(name string) (*section, error) {
 	return nil, nil
 }
 
-func (c *config) Add(s *section) *section {
+func (c *Config) Add(s *section) *section {
 	c.Sections = append(c.Sections, s)
 	return s
 }
 
-func (c *config) Merge(s *section) *section {
+func (c *Config) Merge(s *section) *section {
 	var sec *section
 	for i := range c.Sections {
 		sname := c.sectionName(s)
@@ -180,7 +180,7 @@ func (c *config) Merge(s *section) *section {
 	return sec
 }
 
-func (c *config) Del(name string) {
+func (c *Config) Del(name string) {
 	var i int
 	for i = 0; i < len(c.Sections); i++ {
 		if c.Sections[i].Name == name {
@@ -192,14 +192,14 @@ func (c *config) Del(name string) {
 	}
 }
 
-func (c *config) sectionName(s *section) string {
+func (c *Config) sectionName(s *section) string {
 	if s.Name != "" {
 		return s.Name
 	}
 	return fmt.Sprintf("@%s[%d]", s.Type, c.index(s))
 }
 
-func (c *config) index(s *section) (i int) {
+func (c *Config) index(s *section) (i int) {
 	for _, sec := range c.Sections {
 		if sec == s {
 			return i
@@ -211,7 +211,7 @@ func (c *config) index(s *section) (i int) {
 	panic("not reached")
 }
 
-func (c *config) count(typ string) (n int) {
+func (c *Config) count(typ string) (n int) {
 	for _, sec := range c.Sections {
 		if sec.Type == typ {
 			n++
